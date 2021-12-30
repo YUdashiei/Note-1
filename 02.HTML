@@ -1,0 +1,221 @@
+一、常用标签1：页面结构标签
+       <html></html>：用于标记页面的开始和结束 —— 必需的
+       <head></head>： 页面的头部 —— 必需的
+       <body></body> ：页面的主体 —— 必需的
+       <title></title>：头部里的标题
+       <link rel="" href="">：链接一个外部资源文件，例如图标文件、样式表文件等
+       <meta charset="">：页面元数据（描述数据的数据）
+<!-- html为只能放一行设置版本号 -->
+<!DOCTYPE html> 
+<!-- 设置网页自然语言 -->
+<html lang="zh">
+<head>
+	<!-- meta：元数据(描述数据的数据)-->
+	<!-- name：元数据名称 content ：元数据内容 -->
+    <!--<meta name="keywords" content="tedu"/> -->
+	<meta charset='utf-8'>
+	<!-- 页面标题 -->
+	<title>首页</title> 
+	<!-- head中不允许出现img元素-->
+	<!-- libk：链接（一个外部资源） -->
+	<!-- rel属性：relationship，关系 -->
+	<link rel="icon" href="./img/favico.ico">
+</head>
+<body>
+	<p></p>
+</body>
+</html>
+
+二、常用标签2：表格
+      一般情况下，使用table元素实现批量的数据展示；偶尔可以使用它实现页面的特殊布局(例如水平和竖直同时居中)
+	<table></table>：数据表
+	<tr></tr>：表中的一行
+	<td></td>：表中的一列
+	-----------------------------------------------
+	<caption></caption>表格的标题
+	<thead></thead>：表头
+	<tbody></tbody>：表体
+	<tfoot></tfoot>：表尾
+	<th></th>：表头中的标题列
+  
+	<!-- 完整的表格结构 -->
+<!-- caption：表格标题-->
+<!-- thead：表格头部-->
+<!-- tbody：数据主体 -->
+<!-- tfoot：表格尾部 -->
+<table border="1" width="600">
+	<caption>成绩表</caption>
+	<thead>
+		<tr>
+			<th>姓名</th>
+			<th>性别</th>
+			<th>成绩</th>
+			<th>说明</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td>小明</td>
+			<td>76</td>
+			<td>第一次</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>熊红</td>
+			<td>56</td>
+			<td>第二次</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>小李</td>
+			<td>79</td>
+			<td>第三次</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="4" align="right">制表人</td>
+		</tr>
+	</tfoot>
+	
+</table>
+
+
+三、常用标签3：列表
+	<ol></ol>：有序列表				
+	<ul></ul>：无序列表
+	<li></li>：列表项
+	-------------------------------------
+	<dl></dl>：定义列表
+	<dt></dt>：定义一个类型
+	<dd></dd>：定义该类型的详细说明
+  
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title></title>
+</head>
+<body>
+	<!-- 有序列表  -->
+	<!-- ol:Ordered List -->
+	<!-- Li:List Item,列表项 -->
+	<ol>
+		<li>老牛10</li>
+		<li>老贾40</li>
+		<li>老张79</li>
+		<li>老年24</li>
+	</ol>
+	
+	<!--type属性：有序列表前序号类型 -->
+	<ol type="i">
+		<li>老牛10</li>
+		<li>老贾40</li>
+		<li>老张79</li>
+		<li>老年24</li>
+	</ol>
+	
+	
+	<!-- 无序列表 -->
+	<!-- Ul:Unordered List -->
+	<!-- type属性：指定无序列表前的提示符 -->
+	<ul type="circle">
+		<li>凳子</li>
+		<li>椅子</li>
+		<li>电视</li>
+		<li>电脑</li>
+		<li>空调</li>
+	</ul>
+	
+	<!-- 列表嵌套 -->
+	<ul type="circle">
+		<li>
+			商品标题
+			<ul type="disc">
+				<li>
+					添加商品
+					<ul type="square">
+						<li>添加手机</li>
+						<li>添加电脑</li>
+						<li>添加平板</li>
+					</ul>
+				</li>
+				<li>
+					删除商品
+					<ul type="disc">
+						<li>删除过期手机</li>
+						<li>删除过期电脑</li>
+						<li>删除过期平板</li>
+					</ul>
+				</li>
+				<li>
+					修改商品
+					<ol type="1">
+						<li>修改坏</li>
+						<li>好</li>
+						<li>没用</li>
+					</ol>
+				</li>
+			</ul>
+		</li>
+		<li>用户</li>
+		<li>订单</li>
+	</ul>
+	<!-- 定义列表 了解-->
+	<!--dl：Definition List  -->
+	<!-- Definition Type 定义一个类型-->
+	<!-- Definition Descripton 定义该类型详细的描述-->
+	<dl>
+		<dt>电脑</dt>
+		<dd>用来上网</dd>
+	</dl>
+</body>
+</html>
+
+
+
+四、常用标签4：表单
+	<form></form>：用于收集用户输入的表单
+	<input type="text">：单行文本输入框
+	<input type="password">：单行密码输入框
+	<input type="radio">：单选按钮
+	<input type="submit">：提交按钮
+	<textarea rows="行数" col="列数"></textarea>：多行文本输入框
+  
+  <!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title></title>
+</head>
+<body>
+	<h3>注册新用户</h3>
+	<!-- form：表单，用于收集用户信息，并提交给服务器的一种机制 -->
+	<!-- action：动作，表示下面的数据将要提交给哪个API来处理 -->
+	<!-- method：方法，数据的提交给服务器的方法 -->
+	<!-- input：输入框 -->
+	<!-- type：输入框的类型，text表示 单行文本输入框 -->
+	<!-- type：输入框的类型，submit表示 提交按钮-->
+	<!-- type：输入框的类型，password表示 单行密码输入框-->
+	<!-- type：输入框的类型，radio表示 单选按钮-->
+	<!-- name：名称，表示将要提交给服务器的数据的名 -->
+	<!-- value：值，按钮的值就是按钮上显示是文字；单选按钮的值就是选中该选项要提交的值-->
+	<form action="/v1/user/register" method="get">
+		用户名：<input type="text" name="yonghuming"> <br>
+		密码：<input type="password" name="mima"> <br>
+		性别：<input type="radio" name="xingbie" value="nan">男 
+			<input type="radio" name="xingbie" value="nv">女 <br>
+		<!-- textarea：文本区域，多行文本输入框 -->
+		<!-- rows：显示出来的行数 -->
+		<!-- cols：显示处理的列数 -->
+		个人签名：<textarea name="qianming" cols="60" rows="5"></textarea><br>
+		
+		<input type="submit" value="提交我的注册信息">
+	</form>
+</body>
+</html>
