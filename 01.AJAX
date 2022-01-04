@@ -1,0 +1,108 @@
+一.web服务器
+//引入必需的模块文件 和 常量
+const express = require('express')
+const app = express()
+const port = 8080
+
+//启动WEB服务器——就是让它监听特定的端口
+app.listen(port, ()=>{
+	console.log('服务器成功监听端口', port)
+})
+
+//托管当前项目的静态资源——任何人任何时间访问，内容都是一成不变的——网页/图片/样式/脚本
+app.use(express.static('./public'))
+
+
+//引入自定义的路由器模块			
+const userRouter = require('./router/user')
+app.use('/v2/user', userRouter)
+
+二.数据库
+/****数据库连接池模块****/
+//引入必需的第三方模块
+const  mysql  =  require('mysql')
+
+//创建并导出一个数据库连接池
+module.exports = mysql.createPool({
+	//host: '127.0.0.1',
+	//port: '3306',
+	user: 'root',		//必需
+	//password: '',
+	database: 'xz',		//必需
+	//connectionLimit: 15
+})
+
+三.用户路由
+/*****路由器模块：封装着与user相关的路由*******/
+//引入必需的模块
+const express = require('express')
+const pool = require('../pool')
+const router = express.Router()
+module.exports = router
+
+//声明当前路由器中的路由：检查用户名是否存在
+router.get('/check_uname', (req,res)=>{
+	//从请求URL中读取查询字符串数据
+	const  n = req.query.uname
+	//到数据库中查询 n 是否存在
+	pool.query('SELECT uid FROM xz_user WHERE uname=?', [n], (err, result)=>{
+		//SQL语句执行错误就抛出，终止函数执行
+		if(err)throw err
+		//否则就向客户端发送查询结果
+		if(result.length>0){//查询结果集中有数据
+			res.send('exists')	
+		}else {				//否则(查询结果集中无数据)
+			res.send('non-exists')
+		}
+	})
+})
+
+四.html静态页面
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<!-- 
+	向服务器提交数据的两种方法：
+		①表单提交法（同步提交法）
+		②AJAX提交法（异步提交法）
+	“输入框失去焦点时验证用户名是否已被占用”只能使用方法2
+	注意：访问当前页面必须通过自己编写的Node.js服务器(8080端口)托管访问
+	不能通过HBuilder提供的占用8848端口的服务器访问！！！！！
+	-->
+	
+	<!-- HTML元素的ID就是它的名号，可以直接在JS中当变量使用 -->
+	用户名：<input type="text" id="yongHuMing"> 
+	<span id="yongHuMingTiShi">用户名长度在8~16位之间</span>	<br>
+	密码：<input type="password">  <br>
+	<input type="button" value="提交注册信息">
+	
+	<!-- 客户端JS——推荐编写在body的最后 -->
+	<script>
+		//监听输入框的失去焦点事件(blur)
+		yongHuMing.onblur = ()=>{
+			//获取输入框中当前的输入内容
+			let  n = yongHuMing.value
+			//准备访问服务器端动态数据接口
+			let url = 'http://127.0.0.1:8080/v2/user/check_uname?uname=' + n
+			/************使用AJAX技术异步请求服务器端接口数据**************/
+			//①创建请求对象
+			//②打开到服务器的连接
+			//③发送请求消息
+			//④当接收到响应消息时加以处理 
+			//yongHuMingTiShi.innerHTML = '用户名已被占用'
+		}
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
