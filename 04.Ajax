@@ -1,0 +1,508 @@
+1./****数据库连接池模块****/
+//引入必需的第三方模块
+const  mysql  =  require('mysql')
+
+//创建并导出一个数据库连接池
+module.exports = mysql.createPool({
+	//host: '127.0.0.1',
+	//port: '3306',
+	user: 'root',		//必需
+	//password: '',
+	database: 'xz',		//必需
+	//connectionLimit: 15
+})
+
+2.web服务器
+//引入必需的模块文件 和 常量
+const express = require('express')
+const app = express()
+const port = 8080
+
+//启动WEB服务器——就是让它监听特定的端口
+app.listen(port, ()=>{
+	console.log('服务器成功监听端口', port)
+})
+
+//托管当前项目的静态资源——任何人任何时间访问，内容都是一成不变的——网页/图片/样式/脚本
+app.use(express.static('./public'))
+
+//添加一个中间件，让Express可以处理请求主体数据，保存在req.body中
+app.use(express.urlencoded({
+	extended: false    //使用扩展工具进行body数据解码吗：不使用
+}))
+
+//引入自定义的路由器模块			
+const userRouter = require('./router/user')
+app.use('/v2/user', userRouter)
+
+const productRouter = require('./router/product')
+app.use('/v2/product', productRouter)
+
+3./*****路由器模块：封装着与product相关的路由*******/
+//引入必需的模块
+const express = require('express')
+const pool = require('../pool')
+const router = express.Router()
+module.exports = router
+
+/*路由：向客户端输出商品列表 
+	请求方法：GET
+	接口地址：/v2/product/list
+	请求查询字符串数据：pageSize - (可选)一次查询几条数据，如果未指定，则默认返回10条记录
+	http://127.0.0.1:8080/v2/product/list?pageSize=5
+*/
+router.get('/list', (req, res)=>{
+	let ps = req.query.pageSize  //客户端提交的查询字符串数据都是string
+	ps = ps ? parseInt(ps) : 10	//如果客户端提交了ps，则用原值；否则设置为10
+	
+	let sql = 'SELECT  lid,title,price  FROM  xz_laptop  LIMIT  ?'
+	pool.query(sql, ps, (err, result)=>{
+		if(err)throw err
+		res.send(result)
+	})
+})
+
+/*
+接口地址：/v2/product/listbypage   分页向客户端返回商品数据
+请求参数：
+	pageSize — 每页显示的记录数
+	pageNum — 要显示的页号
+返回数据：JSON格式，形如 [{"lid":11,"title":"戴尔","price":3500}, ...{ }]
+*/
+router.get('/listbypage', (req, res)=>{
+	let ps = req.query.pageSize		//接收客户端提交的请求数据：页面大小
+	ps = parseInt(ps)	//把请求查询字符串中的字符串解析为整数
+	let pn = req.query.pageNum		//接收客户端提交的请求数据：页号
+	
+	//从数据库中的哪条记录开始读取
+	let start = (pn-1)*ps   //此处有一个隐式类型转换：string>number
+	let sql = 'SELECT  lid,title,price  FROM xz_laptop  LIMIT   ?, ?'
+	pool.query(sql, [start, ps], (err,result)=>{
+		if(err)throw err
+		res.send(result)   //result(JS对象) => JSON.stringify()
+	})
+})
+
+
+/*
+接口地址：/v2/product/remove   根据商品编号，删除商品
+请求参数：
+	lid - 要删除的商品的编号
+返回数据：Text格式，形如 “delete-succ”或“delete-err”
+*/
+router.delete('/remove', (req, res)=>{
+	let lid = req.query.lid
+	lid = parseInt(lid)
+	
+	let sql = 'DELETE  FROM  xz_laptop  WHERE   lid=?'
+	pool.query(sql,  lid,  (err,result)=>{
+		if(err)throw err
+		if(result.affectedRows>0){		//affected 被影响  rows 行数
+			res.send('delete-succ')		//此处的响应消息主体是 text/plain
+		}else {
+			res.send('delete-err')
+		}
+	})
+})
+
+/*
+接口地址：POST /v2/product/add   添加商品
+请求主体：
+	title - 商品名称
+	price - 单价
+返回数据：{"code": 901, "lid":44 }
+*/
+router.post('/add', (req, res)=>{
+	let t = req.body.title
+	let p = req.body.price
+	 
+	let sql = 'INSERT INTO xz_laptop(title, price)  VALUES(?,?)'
+	pool.query(sql, [t, p], (err, result)=>{
+		if(err)throw err
+		res.send(result)
+	})
+})
+
+4./*****路由器模块：封装着与user相关的路由*******/
+//引入必需的模块
+const express = require('express')
+const pool = require('../pool')
+const router = express.Router()
+module.exports = router
+
+//声明当前路由器中的路由：检查用户名是否存在
+router.get('/check_uname', (req,res)=>{
+	//从请求URL中读取查询字符串数据
+	const  n = req.query.uname
+	//到数据库中查询 n 是否存在
+	pool.query('SELECT uid FROM xz_user WHERE uname=?', [n], (err, result)=>{
+		//SQL语句执行错误就抛出，终止函数执行
+		if(err)throw err
+		//否则就向客户端发送查询结果
+		if(result.length>0){//查询结果集中有数据
+			res.send('exists')	
+		}else {				//否则(查询结果集中无数据)
+			res.send('non-exists')
+		}
+	})
+})		
+
+
+router.get('/login', (req, res)=>{
+	let n = req.query.uname
+	let p = req.query.upwd
+	
+	/****模拟服务器端执行耗时5s*****/
+	// let start = Date.now()
+	// let newTime = 0
+	// do{
+	// 	newTime = Date.now()
+	// }while( newTime-start < 5000 )
+	/*****************************/
+	
+	if(n==='tom'&&p==='123'){
+		res.send('login success')
+	}else {
+		res.send('login failed')
+	}
+})
+
+5.<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<h3>商品列表</h3>
+		<hr>
+		<!-- table>(thead>tr>th*4)+tbody>tr>td>img -->
+		<table border="1" width="100%">
+			<thead>
+				<tr>
+					<th>编号</th>
+					<th>标题</th>
+					<th>单价</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody"> 
+				<tr>
+					<td colspan="4" align="center">
+						<img src="./img/loading.gif" width="100">
+					</td>
+				</tr>
+				<!-- <tr>
+					<td>1</td>
+					<td>名称</td>
+					<td>3000</td>
+					<td><a href="#">删除</a></td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>名称</td>
+					<td>3000</td>
+					<td><a href="#">删除</a></td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>名称</td>
+					<td>3000</td>
+					<td><a href="#">删除</a></td>
+				</tr> -->
+			</tbody>
+		</table>
+		<script>
+			//自定义一个全局函数，用于向服务器提交要删除的商品的编号
+			function  deleteProduct( lid ) {
+				console.log('即将删除商品：', lid)
+				//1
+				let xhr = new XMLHttpRequest()
+				//2
+				xhr.open('DELETE', '/v2/product/remove?lid='+lid)
+				//3
+				xhr.onload = function(){
+					console.log(xhr.responseText)
+				}
+				//4
+				xhr.send()
+			}
+			
+			
+			
+			//为“窗口内容加载完成”事件指定处理方法
+			//onclick、onblur、onchange、onload
+			window.onload = function(){
+				console.log('窗口中的静态页面内容加载完成')
+				//向服务器发起异步的动态数据请求，获取商品数据
+				//创建对象
+				let xhr = new XMLHttpRequest()				
+				//打开连接
+				xhr.open('GET', '/v2/product/listbypage?pageSize=5&pageNum=3')
+				//准备处理
+				xhr.onload = function(){
+					//console.log( typeof(xhr.responseText) )	//string
+					//console.log( xhr.responseText )
+					//JSON反序列化： JSON字符串 => JS对象
+					let data = JSON.parse( xhr.responseText )
+					//console.log( typeof(data) )   			//object
+					//console.log( data )
+					//根据data里的数据，拼接创建多个tr>td*4
+					let html = ''   //用于保存要拼接的HTML片段
+					for(let i=0; i<data.length; i++){
+						let  p = data[i]	//从数组中取出第i个数据——就是一个商品
+						html += `
+							<tr>
+								<td>${p.lid}</td>
+								<td>${p.title}</td>
+								<td>${p.price}</td>
+								<td><a href="javascript: deleteProduct(${p.lid})">删除</a></td>
+							</tr>
+						`
+					}
+					console.log(html)
+					tbody.innerHTML = html  //把拼接好的字符串放置到页面中
+				}
+				//发送请求
+				xhr.send()
+			}
+		</script>
+	</body>
+</html>
+
+6.<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<!-- 
+	向服务器提交数据的两种方法：
+		①表单提交法（同步提交法）
+		②AJAX提交法（异步提交法）
+	“输入框失去焦点时验证用户名是否已被占用”只能使用方法2
+	注意：访问当前页面必须通过自己编写的Node.js服务器(8080端口)托管访问
+	不能通过HBuilder提供的占用8848端口的服务器访问！！！！！
+	-->
+
+	<!-- HTML元素的ID就是它的名号，可以直接在JS中当变量使用 -->
+	用户名：
+	<input type="text" id="yongHuMing"> 
+	<span id="yongHuMingTiShi">用户名长度在8~16位之间</span>	<br>
+	
+	密码：<input type="password">  <br>
+	<input type="button" value="提交注册信息">
+	
+	<!-- 客户端JS——推荐编写在body的最后 -->
+	<script>
+		//监听输入框的失去焦点事件(blur)
+		yongHuMing.onblur = function(){
+			//获取输入框中当前的输入内容
+			let  n = yongHuMing.value
+			//准备访问服务器端动态数据接口
+			let url = 'http://127.0.0.1:8080/v2/user/check_uname?uname=' + n
+			/************使用AJAX技术异步请求服务器端接口数据**************/
+			//①创建请求对象
+			let req = new XMLHttpRequest()	
+			//②打开到服务器的连接
+			req.open('get', url)
+			//③发送请求消息
+			req.send()
+			//④当接收到响应消息时加以处理   load：加载完成
+			req.onload = function(){
+				console.log(req.responseText)  //响应消息的中的文本
+				if(req.responseText==='exists'){
+					yongHuMingTiShi.innerHTML = '抱歉！用户名已被占用'
+				}else {
+					yongHuMingTiShi.innerHTML = '恭喜！用户名未被占用'
+				}
+			}
+		}
+	</script>
+</body>
+</html>
+
+7.<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<h3>使用传统的form提交请求数据</h3>
+		<form action="http://127.0.0.1:8080/v2/user/login" method="get">
+			用户名：<input type="text" name="uname"><br>
+			密码：<input type="text" name="upwd"> <br>
+			<input type="submit" value="登录">
+		</form>
+		
+		<hr>
+		<h3>使用ajax提交请求数据</h3>
+		用户名：<input type="text" id="inputUname"><br>
+		密码：<input type="text" id="inputUpwd"> <br>
+		<input type="button" value="登录" id="btnLogin">
+		<h4 id="msg">登录中...</h4>
+		
+		<script>
+			btnLogin.onclick = function(){
+				//收集用户的输入
+				let n = inputUname.value
+				let p = inputUpwd.value
+				let url = 'http://127.0.0.1:8080/v2/user/login?uname='+n+'&upwd='+p
+				
+				let xhr = new XMLHttpRequest()
+				xhr.open('get', url)
+				xhr.send()
+				console.log(1)
+				xhr.onload = function(){
+					console.log(2)
+					console.log(xhr.responseText)
+					msg.innerHTML = xhr.responseText
+				}
+				console.log(3)
+			}
+		</script>
+	</body>   
+</html>
+
+8.<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<h3>添加新商品</h3>
+		<hr>
+		商品标题：<input type="text" id="biaoti"><br>
+		商品单价：<input type="text" id="danjia"><br>
+		<input type="button" value="保存" id="baocun">
+		
+		<script>
+		  //为按钮的“单击事件”指定处理方法
+		  baocun.onclick = function(){
+			  let bt = biaoti.value
+			  let dj = danjia.value
+			  
+			  //必须对请求主体数据中可能出现的中文进行编码
+			  //bt = encodeURI(bt)
+			  let data = `title=${bt}&price=${dj}`
+			  
+			  //1创建对象
+			  let xhr = new XMLHttpRequest()
+			  //2打开连接
+			  xhr.open('POST', '/v2/product/add')
+			  //2.5修改请求消息头部
+			  //xhr默认发起的请求内容类型是“普通文本(未经编码)”——根据HTTP协议，服务器是拒收的
+			  //xhr.setRequestHeader('Content-Type','text/plain;charset=UTF-8')
+			  //凡是XHR发起的有主体的请求，必须修改请求消息内容类型
+			  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8')
+			  //3准备处理
+			  xhr.onload = function(){
+				  console.log(xhr.responseText)
+			  }
+			  //4发送请求
+			  xhr.send( data )  //此处发送请求主体数据：k=v&k=v&...
+			  
+		  }
+		</script>
+	</body>
+</html>
+
+9.<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<h4>商品列表</h4>
+		<hr>
+		<!-- table>(thead>tr>th*4)+tbody>tr>td -->
+		<table border="1" width="100%">
+			<thead>
+				<tr>
+					<th>编号</th>
+					<th>名称</th>
+					<th>单价</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody">
+				<tr>
+					<td id="productList" colspan="4" align="center">点击下方按钮以加载数据</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		
+		<button id="loadData">加载商品数据</button>   
+		&nbsp;&nbsp;&nbsp;
+		<select id="choosePageSize">
+			<option value="5">每页显示5条记录</option>
+			<option value="10" selected>每页显示10条记录</option>
+			<option value="20">每页显示20条记录</option>
+			<option value="40">每页显示40条记录</option>
+			<option value="60">每页显示60条记录</option>
+		</select>
+		
+		<script>
+		//为“加载数据”按钮的单击事件指定处理方法
+		loadData.onclick = function(){
+			//发起异步请求，获取服务器端接口提供的数据
+			//1创建异步请求对象
+			let xhr = new XMLHttpRequest()
+			//2打开到服务器的连接
+			//xhr.open('GET', 'http://127.0.0.1:8080/v2/product/list')
+			xhr.open('GET', '/v2/product/list')
+			//3提前准备好：如果加载到了响应数据，该如何处理
+			xhr.onload = function(){
+				//把响应消息中主体数据放置到表格中
+				productList.innerHTML = xhr.responseText
+			}
+			//4正式的向服务器发出请求消息
+			xhr.send()
+		}
+		
+		//为“选择每页显示的条数”下拉菜单的“选项改变事件”指定处理方法			
+		choosePageSize.onchange = function(){
+			//读取下拉菜单当前选中的option的value
+			let ps = choosePageSize.value
+			
+			//1创建对象
+			let xhr = new XMLHttpRequest()
+			//2打开连接
+			xhr.open('GET', '/v2/product/list?pageSize=' + ps)
+			//3准备处理
+			xhr.onload = function(){
+				//productList.innerHTML = xhr.responseText
+				//console.log( typeof(xhr.responseText) )		//string
+				//console.log( xhr.responseText[0].price )	//undefined
+				///////此次需要对服务器端返回的JSON字符串进行反序列化//////
+				let data = JSON.parse(xhr.responseText)
+				//console.log( typeof(data) )		//object
+				//console.log(data)					//数组
+				let html = `
+				  <tr>
+					<td>${data[0].lid}</td>
+					<td>${data[0].title}</td>
+					<td>${data[0].price}</td>
+					<td><a href="#" onclick="deleteProduct(${data[0].lid})">删除</a></td>
+				  </tr>
+				`
+				tbody.innerHTML = html
+			}
+			//4发起请求
+			xhr.send()
+		}
+		
+		
+		function deleteProduct(lid){
+			console.log('即将删除商品：', lid)
+			//1
+			//2
+			//3
+			//4
+		}
+		</script>
+	</body>
+</html>
