@@ -1,0 +1,37 @@
+AJAX发送GET请求  —— MDN
+  ①创建一个能够发起HTTP请求消息的对象
+	let  xhr = new  XMLHttpRequest( )  
+	//名称含义：向服务器发起HTTP请求消息，期望得到XML格式的响应数据
+  ②XHR打开到服务器的连接(即拨通电话)
+	xhr.open(method,  url)		//发起一个异步请求
+	xhr.open(method,  url,   true)	//发起一个异步请求
+	xhr.open(method,  url,   false)	//发起一个同步请求
+	xhr.setRequestHeader(name,  value)	//设置一个请求消息头
+  ③提前声明好：如果得到了服务器端的响应消息，该如何处理
+	xhr.onload = function(){
+		console.log( xhr.status )  //响应状态行中的状态，例如200/404...
+		console.log( xhr.statusText )  //响应状态行中的原因短句，例如OK/NotFound
+		let all = xhr.getAllResponseHeaders()  //得到所有的响应消息头部
+		let value = xhr.getResponseHeader(name) //得到某一个定的响应消息头部
+		let responseBody = xhr.responseText   //响应消息的主体内容   
+	}
+  ④向服务器端发送请求消息
+	xhr.send( )		//发送一个没有请求主体的请求消息
+	xhr.send( null )	//发送一个没有请求主体的请求消息
+	xhr.send( 'uname=tom&upwd=123' )   //发送一个有请求主体的请求消息
+  
+ AJAX发送POST/PUT请求 —— 有请求主体
+③创建必需的数据库结构
+	INSERT  INTO  xz_laptop(title, price)  VALUES(?, ?)
+④编写服务器端数据API
+	接口地址：POST  /v2/product/add		
+	请求主体：title=戴尔小新&price=8000
+	返回数据： {"code": 901, "lid":44}
+	ApiPost接口测试：http://127.0.0.1:8080/v2/product/add
+	提示：Node.js/Express服务器端必须声明解析编码后的请求主体数据
+	app.use(express.urlencoded({ extended: false  }))
+  ⑤编写静态HTML页面
+  ⑥使用AJAX异步请求服务器端动态数据
+	//2.5发送请求消息前必须修改其头部：内容类型
+	xhr.setRequestHeader('Content-Type',  'text/plain')  //默认值，"未经编码的普通文本"，服务器拒收
+	xhr.setRequestHeader('Content-Type',  'application/x-www-form-urlencoded') //声明请求主体数据是经过编码后的文本
