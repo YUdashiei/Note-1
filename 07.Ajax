@@ -1,0 +1,304 @@
+1.样式位置
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="css/s01.css">
+		<style>
+			div {
+				background-color: yellow;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="color:red;">这里是页头</div>
+		<div>这里是页面主体</div>
+		<div>这里是页面的尾部</div>
+	</body>
+</html>
+
+2.样式优先级
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			div {
+				/* 强制样式的优先级最高 */
+				color: green;
+				/* color: green  !important; */
+			}
+		</style>
+		<link rel="stylesheet" href="css/s02.css">
+	</head>
+	<body>
+		<div style="color:red;">这里是页头</div>
+		<div  id="uname">这里是页面主体</div>
+		<div>这里是页面的尾部</div>
+		
+		<script>
+			uname.onlick = function(){}
+		</script>
+	</body>
+</html>
+
+3.选择器
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			/* 通用选择器 */
+			* {
+				margin: 0;
+			}
+			/* 群组选择器 */
+			h1, h6, p, ul  {
+				/* margin: 0; */
+			}
+			
+			#item2 {
+				/* 文本粗细(体重)：加粗 */
+				font-weight: bold;
+			}
+			
+			span {
+				/* 显示模式：由默认的inline变为block */
+				display: block;
+			}
+			
+			
+			/* 选中所有的class="text-msg"的元素 */
+			.text-msg {
+				color: white;
+			}
+			/* 选中所有的class="text-danger"的元素 */
+			.text-danger {
+				background-color: red;
+				/* color: gold; */
+			}
+			/* 选中所有的class="text-success"的元素 */
+			.text-success {
+				background-color: green;
+				/* color: gold; */
+			}
+		</style>
+	</head>
+	<body>
+		<h1>一号标题</h1>
+		<h6>六号标题</h6>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto voluptate dolor sed nulla ipsum nemo veritatis sunt quia nisi rerum dolore maxime saepe blanditiis excepturi porro repudiandae accusamus quam expedita.</p>	
+		<ul>	
+			<li id="item1">首页</li>
+			<li id="item2">学习用品</li>
+			<li>私人订制</li>
+		</ul>
+		
+		<hr>
+		<hr>
+		
+		<span class="text-msg  text-danger">用户名不能为空</span>
+		<span class="text-msg  text-danger">密码不能为空</span>
+		<span class="text-msg  text-danger">两次输入的密码不一样</span>
+		
+		<span class="text-msg  text-success">用户名可用</span>
+		<span class="text-msg  text-success">密码长度合法了</span>
+		<span class="text-msg  text-success">两次输入的密码一样了</span>
+		
+	</body>
+</html>
+
+
+4.伪类属性选择器
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			img {
+				width:  200px;
+			}
+			/* 并列选择器：选中img元素且处于“鼠标悬停”状态 */
+			img:hover {
+				width: 250px;
+			}
+			
+			/* 按钮背景色平时是红色，鼠标悬停是紫色，鼠标按下时粉红色 */
+			button {
+				background-color: red;
+			}
+			button:hover {
+				background-color: purple;
+			}
+			button:active {
+				background-color: pink;
+			}
+			/* 超链接未被访问时，文字颜色为yellow；鼠标悬停时颜色为orange；被激活时颜色为green；被访问过后颜色为gray */
+			a:link {	/* 未被访问过 */
+				color: yellow;
+			}
+			a:visited {  /* 访问过后 */
+				color: gray;
+			}
+			a:hover {	/* 鼠标悬停 */
+				color: orange;
+			}
+			a:active {	/* 激活状态 */
+				color: green;
+			}
+			/* 输入框平时边框为浅绿色(lightgreen)，获得焦点时边框变为深绿色(darkgreen) */
+			input {
+				border: 1px  solid  lightgreen;
+			}
+			input:focus {
+				border: 1px   solid   red;
+				/* outline: 0; */
+			}
+			
+			/* 选中具有readonly属性的输入框，边框设为3px solid gray*/
+			[readonly] {
+				border: 3px solid  gray;
+			}
+			/* 选中具有name属性，且属性值为uname的输入框，设置背景色为淡黄色 */
+			[name="uname"] {
+				background-color: lightyellow;
+			}
+		</style>
+	</head>
+	<body>
+		<img src="img/3.png">
+		
+		<button>添加到购物车</button>
+		
+		<a href="//qq.com">访问TMOOC</a>
+		
+		<input type="text">
+		
+		<hr>
+		
+		<input type="text">
+		<input type="text" readonly>
+		<input type="text" name="uname">
+		<input type="password" name="upwd">
+		
+	</body>
+</html>
+
+5.后代选择器
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+		/* 给div中所有的span添加背景颜色——2/3/4 */
+		div   span {
+			background-color: pink;
+		}
+		/* 选中2/4两个span*/
+		div > span {
+			font-weight: bold;
+		}
+		/* 选中3那个span */	
+		div > p > span {
+			/* 字体大小/尺寸 */
+			font-size: 2em;
+		}
+		</style>
+	</head>
+	<body>
+		<span>1</span>
+		
+		<div>
+			<span>2</span>
+			<p>
+				<span>3</span>
+			</p>
+			<span>4</span>
+		</div>
+	</body>
+</html>
+
+6.兄弟和相邻兄弟选择器
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			/* 兄弟选择器，选择 p 后的所有的兄弟 span */
+			p ~ span {
+				color:  red;
+			}
+			/* 相邻兄弟选择器 */
+			p + span {
+				background-color: green;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<span>0</span>
+		<p>1</p>
+		<!-- <hr> -->
+		<span>2</span>
+		<span>2.5</span>
+		<hr>
+		<div><span>3</span></div>
+		<span>4</span>
+	</body>
+</html>
+
+7.rgb和rgba描述颜色
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			body {
+				/* background-color: red; */
+				/* background-color: cyan; */
+				
+				/* background-color: green; */
+				/* background-color: magenta; */
+				
+				/* background-color: rgb(0, 255, 255); */
+				background-color: rgba(255, 0, 0,  .5);
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+</html>
+
+
+8.em描写尺寸
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			html {
+				font-size: 20px;
+			}
+			body {
+				font-size: 30px;
+			}
+			div {
+				font-size: 40px;
+			}
+			span {
+				/* font-size:  .5em; */
+				font-size: .59rem;   /* root em，根倍率*/
+			}
+		</style>
+	</head>
+	<body>
+		<div><span>ABCD</span></div>
+	</body>
+</html>
