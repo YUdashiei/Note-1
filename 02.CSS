@@ -1,0 +1,180 @@
+1.盒模型
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			img {
+				/* 清除两行图片间竖直方向上的间距 */
+				vertical-align: middle;
+			}
+			.hero {
+				/*一个元素水平方向上占用的布局总空间*/
+				margin-left: 10px;					/*左外间距*/
+				border-left: 20px  solid  #00f;		/*左边框*/
+				padding-left: 30px;					/*左内边距*/
+				/* width */							/*内容宽度*/
+				padding-right: 30px;				/*右内边距*/
+				border-right: 20px  solid  #00f;	/*右边框*/
+				margin-right: 10px;					/*右外间距*/
+				
+				margin-top: 10px;					/*上外间距*/
+				border-top: 20px solid #00f;		/*上边框*/
+				padding-top: 30px;					/*上内边距*/
+				/* height */
+				padding-bottom: 30px;				/*下内边距*/
+				border-bottom: 20px solid #00f;		/*下边框*/
+				margin-bottom: 10px;				/*下外间距*/
+			}
+		</style>
+	</head>
+	<body>
+		<img src="img/1.jpg"><img src="img/2.jpg"><img src="img/3.jpg"><img src="img/4.jpg"><img class="hero" src="img/5.jpg"><img src="img/6.jpg"><img src="img/7.jpg"><img src="img/8.jpg"><img src="img/9.jpg">
+	</body>
+</html>
+
+2.<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			img {
+				/* 图片与同一行中的文字/图片竖直对齐方式 */
+				vertical-align: baseline;   /*默认值*/
+				/* vertical-align: top; */
+				/* vertical-align: bottom; */
+				/* vertical-align: middle; */
+				
+				/* left - center - right */
+				/* top  - middle - bottom */
+			}
+		</style>
+	</head>
+	<body>
+		abygj国<img src="img/2.jpg" style="width: 100px;">国圈
+		<br>
+		<img src="img/2.jpg" style="width:100px;">
+	</body>
+</html>
+3.<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.tu1 {
+				/* 盒子大小计算方案1：内容盒子 */
+				box-sizing: content-box;  /*默认值*/
+				width: 200px;    /*此处的宽度只包含内容*/
+				margin: 10px;
+				border: 20px solid #00f;
+				padding: 30px;
+			}
+			.tu2 {
+				/* 盒子大小计算方案2：边框盒子 */
+				box-sizing: border-box;
+				width: 200px;    /*此处的宽度包含：边框+内边距+内容*/
+				margin: 10px;
+				border: 20px solid #00f;
+				padding: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 盒子模型总尺寸计算方案1：内容盒子 -->
+		<img class="tu1" src="img/2.jpg">
+		<br>
+		<!-- 盒子模型总尺寸计算方案2：边框盒子 -->
+		<img class="tu2" src="img/2.jpg">
+	</body>
+</html>
+4.<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.xiangXiaSanJiao {
+				width: 0;   /*数值0可以省略单位*/
+				height: 0;
+				border-top:  50px solid #f00;
+				border-right:  50px solid  transparent;
+				/* border-bottom:  50px solid #00f; */
+				border-left:  50px solid  transparent;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="xiangXiaSanJiao"></div>
+		<div class="xiangShangSanJiao"></div>
+		<div class="xiangZuoSanJiao"></div>
+		<div class="xiangYouSanJiao"></div>
+	</body>
+</html>
+5.元素溢出<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			div {
+				/* border: 1px solid #000; */
+				background-color: #ff0;
+				overflow: hidden;
+				/* padding-top: 50px;   方法1：div加上内边距 */
+			}
+			.s1 {
+				/* 方法2：为span添加上内边距 */
+				/* display: block; */     /*把行内元素变为块级元素*/
+				/* padding-top: 50px; */  /*行内元素没有上下内边距，只有块级元素才有*/
+			
+				/* 方法3：为span添加上外间距 */
+				display: block;		/*把行内元素变为块级元素*/
+				margin-top: 50px; 		/*行内元素没有上下外间距，只有块级元素才有*/
+			
+			}
+			.txt {
+				/* padding-top: 50px;
+				padding-bottom: 50px;
+				padding-left: 50px;
+				padding-right: 50px; */
+				
+				/* margin-top: 50px;
+				margin-bottom: 50px;
+				margin-left: 30px;
+				margin-right: 30px; */
+			}
+			.s3 {
+				display: block;
+				margin-bottom: 50px;
+			}
+		</style>
+	</head>
+	<body>
+			<!-- 如何可以让字符“1”在往下去一些？ -->
+			<div>
+				<span  class="s1">1</span>
+				<span  class="s2">2</span>
+				<span  class="s3">3</span> 
+			</div>
+			
+			<hr>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+			<span class="txt">ABCDEFG</span>
+
+	</body>
+</html>
