@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			.pager {
+				background-color: #efefef;
+				padding: 8px;
+			}
+			.pager > span {
+				border: 1px solid  #ddd;
+				/* display: inline-block;
+				width: 80px;
+				height: 100px; */
+				display: inline-block;
+				padding: 10px  20px;
+				/* 边框圆切角半径 */
+				border-radius: 5px;
+			} 
+			.pager  > span:hover {
+				/* 边框颜色 */
+				border-color: #0aa1ed;
+			}
+			.pager  >  span.active {
+				background-color: #0aa1ed;
+				color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="pager">
+			<span>上一页</span>
+			<span  class="active">1</span>
+			<span>2</span>
+			<span>3</span>
+			<span>4</span>
+			<span>5</span>
+			<span>下一页</span>
+		</div>
+	</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			body {
+				/* 字体型号 */
+				font-family: "黑体";
+				font-size: 14px;
+			}
+			.add-to-cart > span {
+				background-color: #e0e0e0;
+				/* color: #fff; */
+				display: inline-block;
+				padding: 2px  8px;
+				font-size: 1.5em;		/*字体大小*/
+				font-weight: bold;      /*字体重量/粗细*/
+				cursor: pointer;
+				user-select: none;
+				/* 行内块元素在竖直方向上与其它内容的对齐方式 */
+				vertical-align: middle;
+			}
+			.add-to-cart  >  span:hover {
+				background-color: #b4b4b4;
+			}
+			.add-to-cart > input {
+				/* input默认就是行内块 */
+				width: 3em;  /*宽度是3个文字的宽*/
+				height: 15px;
+				/* 行内块元素在竖直方向上与其它内容的对齐方式 */
+				vertical-align: middle;
+				border: none;		/*去除边框*/
+				outline: none;		/*去除外轮廓线——只要表单元素在获得焦点后*/
+				/* 文本水平对齐方式：居中 */
+				text-align: center;
+			}
+			.add-to-cart  > div {
+				display: inline-block;
+				background-color: #0AA1ED;
+				padding: 8px 15px;
+				/* 行内元素在竖直方向上与其它内容的对齐方式 */
+				vertical-align: middle;
+				border-radius: 2px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- .add-to-cart>span+input+span+div -->
+		<div class="add-to-cart">
+			<span>-</span>
+			<input value="1">
+			<span>+</span>
+			<div>添加入购物车</div>
+		</div>
+		
+		<hr >
+		<!-- <h1 align="center">居中对齐的文本</h1> -->
+		<h1 style="text-align: center;">居中对齐的文本-h1</h1>
+		<span style="display:inline-block; width:60%; text-align: center;">居中对齐的文本-span</span>
+		<p style="text-align: center;">居中对齐的文本-p</p>
+	</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			/* 页面一级布局框：定宽、独占一行、水平居中 */
+			.header {
+				background-color: #ff0;
+				width: 800px;
+				/* margin-left: 180px; */
+				margin-left: auto;   /*浏览器自动计算左外间距*/
+				margin-right: auto;   /*浏览器自动计算右外间距*/
+				
+				margin-top: auto;		/*auto对竖直方向的margin无效*/
+				margin-bottom: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 页面一级布局框：定宽、独占一行、水平居中 -->
+		<div class="header">这里是页头</div>
+	</body>
+</html>
