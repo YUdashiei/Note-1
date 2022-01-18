@@ -1,0 +1,210 @@
+边框合并分离
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			table {
+				border: 1px  solid   #aaa;
+				width: 500px;
+				height: 200px;
+				/* 边框崩塌：分离 */
+				border-collapse: separate;
+				/* 边框崩塌：崩塌 —— 边框合并 */
+				border-collapse: collapse;
+			}
+			td {
+				border: 1px  solid   #aaa;
+			}
+			td:first-child {
+				background-color: #dfd;
+			}
+			td:last-child {
+				background-color: #ddf;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>小知识：表格相关的样式</h3>
+		<!-- table>tr*6>td*4 -->
+		<table>
+			<tr>
+				<td>11</td>
+				<td>12</td>
+				<td>13</td>
+				<td>14</td>
+			</tr>
+			<tr>
+				<td>21</td>
+				<td>22</td>
+				<td>23</td>
+				<td>24</td>
+			</tr>
+			<tr>
+				<td>31</td>
+				<td>32</td>
+				<td>33</td>
+				<td>34</td>
+			</tr>
+			<tr>
+				<td>41</td>
+				<td>42</td>
+				<td>43</td>
+				<td>44</td>
+			</tr>
+			<tr>
+				<td>51</td>
+				<td>52</td>
+				<td>53</td>
+				<td>54</td>
+			</tr>
+			<tr>
+				<td>61</td>
+				<td>62</td>
+				<td>63</td>
+				<td>64</td>
+			</tr>
+		</table>
+	</body>
+</html>
+
+列表样式使用复杂选择器
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			.list {
+				width: 100%;
+				/* 边框崩塌：崩塌——边框合并 */
+				border-collapse: collapse;
+			}
+			/* 注意此处的选择器！！——浏览器会自动为table添加tbody */
+			.list > tbody > tr:not(:last-child) {
+				/* 除了最后一行都添加下边框 */
+				border-bottom: 1px  solid  #f00;
+			}
+			.list > tbody > tr:nth-child(2n+1) {
+				/* 奇数行背景色 */
+				background-color: #dfd;
+			}
+			.list > tbody > tr:nth-child(2n) {
+				/* 偶数行背景色 */
+				background-color: #ddf;
+			}
+			.list > tbody > tr:hover {
+				/* 鼠标悬停的行修改背景色 */
+				background-color: #fdd;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>仿学子商城的数据表格效果</h3>
+		<!-- table>tr*6>td*4 -->
+		<table class="list">
+			<tr>
+				<td>11</td>
+				<td>12</td>
+				<td>13</td>
+				<td>14</td>
+			</tr>
+			<tr>
+				<td>21</td>
+				<td>22</td>
+				<td>23</td>
+				<td>24</td>
+			</tr>
+			<tr>
+				<td>31</td>
+				<td>32</td>
+				<td>33</td>
+				<td>34</td>
+			</tr>
+			<tr>
+				<td>41</td>
+				<td>42</td>
+				<td>43</td>
+				<td>44</td>
+			</tr>
+			<tr>
+				<td>51</td>
+				<td>52</td>
+				<td>53</td>
+				<td>54</td>
+			</tr>
+			<tr>
+				<td>61</td>
+				<td>62</td>
+				<td>63</td>
+				<td>64</td>
+			</tr>
+		</table>
+	</body>
+</html>
+
+浮动布局
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+			.parent {
+				border: 5px solid #000;
+			}
+			.son1 {
+				border: 5px solid #f00;
+				float: left;
+				width: 33.333%;
+				margin-right: 1px;
+			}
+			.son2 {
+				border: 5px solid #0f0;
+				float: left;
+				width: 33.333%;
+			}
+			.son3 {
+				border: 5px solid #00f;
+				float: left;
+				width: 33.333%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="parent">
+			<div class="son1">1</div>
+			<div class="son2">2</div>
+			<div class="son3">3</div>
+		</div>
+	</body>
+</html>
+
+渐变色
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			div {
+				width: 100%;
+				height: 400px;
+				background-color: #ff0;
+				/* 渐变背景“图” */
+				/* background-image: linear-gradient(90deg, red  0%, lightgreen 50%, purple  100%); */
+				/* background-image: linear-gradient(0deg, #666  0%, #333 10%, #fff  80%, #ccc 90%,  #eee 100%); */
+				/* 重复的渐变背景图 */
+				/* background-image: repeating-linear-gradient(90deg, red  20px, lightgreen 50px, purple  80px); */
+				
+				/* 径向渐变 */
+				background-image: radial-gradient(300px  at  50%  50%, red  0%, lightgreen 50%, purple  100%);
+			}
+		</style>
+	</head>
+	<body>
+		<div></div>
+	</body>
+</html>
