@@ -1,0 +1,131 @@
+弹性布局
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+			.parent {
+				border: 5px solid #000;
+				/* 声明一个弹性容器 */
+				display: flex;
+				/* display: inline-flex; */
+				/* 设定主轴的方向 */
+				flex-direction: row-reverse; /*从右到左*/
+				flex-direction: column; /*从上到下*/
+				flex-direction: column-reverse; /*从下到上*/
+				flex-direction: row;  /*从左到右*/
+				/* 调整内容对齐：设定所有项目在主轴方向上的对齐方式 */
+				justify-content: flex-end;	   /*主轴的结尾处*/
+				justify-content: space-around;  /*空白包裹项目*/
+				justify-content: space-between; /*空白在项目中间*/
+				justify-content: center;
+				justify-content: flex-start;   /*主轴的开始处*/
+				/* 对齐项目：在交叉轴上如何对齐所有项目 */
+				align-items: flex-start;   /*交叉轴的起点*/
+				align-items: flex-end;   /*交叉轴的终点*/
+				align-items: center;   /*交叉轴的中间*/
+				align-items: stretch;   /*拉伸对齐*/
+				/* 换行方式 */
+				flex-wrap: nowrap;   /*不换行*/
+				flex-wrap: wrap;
+			}
+			.son1 {
+				border: 5px solid #f00;
+				width: 500px;
+				/* height: 100px; */
+			}
+			.son2 {
+				border: 5px solid #0f0;
+				width: 1000px;
+				/* height: 200px; */
+			}
+			.son3 {
+				border: 5px solid #00f;
+				width: 2000px;
+				/* height: 400px; */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="parent">
+			<div class="son1" style="font-size:1em;">1</div>
+			<div class="son2" style="font-size:2em;">2<br>2</div>
+			<div class="son3" style="font-size:4em;">3<br>3<br>3</div>
+		</div>
+	</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.list {
+				border: 1px solid #000;
+				/* 弹性容器 */
+				display: flex;
+				/* 弹性容器允许换行 */
+				flex-wrap: wrap;
+				/* 调整内容在主轴上的对齐方式: 空白在项目之间 */
+				justify-content: space-between;
+			}
+			.product {
+				border: 1px solid #000;
+				width: 32%;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>商品列表页的布局</h3>
+		<!-- 表象：三行三列 -->
+		<!-- 方法1：三个弹性容器，每个容器中有三个商品 -->
+		<!-- 方法2：一个容器，其中包含九个商品 -->
+		<div class="list">
+			<div class="product">1</div>
+			<div class="product">2</div>
+			<div class="product">3</div>
+			<div class="product">4</div>
+			<div class="product">5</div>
+			<div class="product">6</div>
+			<div class="product">7</div>
+			<div class="product">8</div>
+			<div class="product">9</div>
+		</div>
+	</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			div {
+				border: 1px solid #000;
+			}
+			.main {
+				display: flex;
+			}
+			.list {
+				/* 不写宽度 */
+				/* 宽度增长比重：1 */
+				flex-grow: 1;
+			}
+			.ad {
+				width: 180px;
+				margin-left: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">
+			<div class="list">商品列表</div>
+			<div class="ad">商家广告</div>
+		</div>
+	</body>
+</html>
