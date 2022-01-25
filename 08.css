@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			.parent{
+				--xz--theme-color:#0aa1ed;
+			}
+			.parent>p{
+				background-color: var(--xz--theme-color);
+			}
+			button{
+				color: var(--xz--theme-color);
+				border: 1px solid var(--xz--theme-color);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="parent">
+			<button>添加购物车</button>
+			<!-- 可以使用行内样式来覆盖父元素继承的变量的值 -->
+			<p style="--xz--theme-color:red">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta aspernatur quas alias laudantium nesciunt ullam culpa minus veritatis deserunt mollitia saepe dolorum illo nostrum neque in! Voluptate ratione ipsam laudantium!<span class="dareent"></span></p>
+		</div>
+		<div class="parent1">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta aspernatur quas alias laudantium nesciunt ullam culpa minus veritatis deserunt mollitia saepe dolorum illo nostrum neque in! Voluptate ratione ipsam laudantium!<span class="dareent"></span></p>
+		</div>
+	</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="./css/bootstrap.css">
+	<title></title>
+</head>
+<body>
+	<h1>Bootstrap中的主题色</h1>
+	<!--primary： 基础色 一等色 -->
+	<p class="bg-primary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>
+	<!-- 基础色 加透明 -->
+	<p style="--bs-bg-opacity: .5" class="bg-primary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>
+	<!-- 二等色 -->
+	<p class="bg-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>
+	<!-- 危险色 -->
+	<p class="bg-danger">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>
+	<!--成功色 -->
+	<p class="bg-success">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>
+	<!-- 警告色 -->
+	<p class="bg-warning">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>
+	<!-- 提示色 -->
+	<p class="bg-info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>
+	<!-- 亮色 -->
+	<p class="bg-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>
+	<!-- 暗色 -->
+	<p class="bg-dark">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum ad quod saepe doloremque magnam. Numquam placeat distinctio sequi in. Pariatur tenetur expedita et libero facere aperiam quas illo nihil odit?</p>	<!--  -->
+</body>
+</html>
