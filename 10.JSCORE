@@ -153,11 +153,4 @@ ES5
 				set
 					赋值监听时使用
 					向属性赋值时触发
-		Object.defineProperties(对象, {属性名: 配置项})
-			配置多个属性
-		Object.preventExtensions
-			不允许新增属性
-		Object.seal
-			不允许增删属性
-		Object.freeze
-			不允许增删改属性
+	
