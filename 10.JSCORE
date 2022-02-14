@@ -1,156 +1,199 @@
-变量和函数的声明, 会在JS代码编译阶段被放入内存中
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>函数声明提升</title>
+</head>
+<body>
+<fi—– 声明提升: JS中独有的设计, 被其他语言使用者所吐槽 –—›
+<fi—– 是一个很烂的设计: 程序员必须通篇阅读代码 才能预测到代码的运行结果 –—›
+<fi—– 声明提升: 所有的声明操作 -- let/var/const/function 声明的变量都会提升到所在作用域的顶部
+–—›
 
-简单说: JS代码会执行两次
-	首先
-		把变量和函数的声明读取到所在作用域的顶部
-	然后
-		执行剩余的代码
+<script type="text/javascript">
+// 代码常规运行方式: 从上向下执行 -- 跟人类阅读文件的方式一致
+// 例如:
+var a = 5 a = 6
+a = 10
+console.log(a); // 10
 
-函数声明
-	提升整个函数到顶部, 提升优先级比变量高
+// 这个show 在上方代码中没有声明, 但是直接使用了
+// 问题: 哪来的?	在后面书写的
+show()
 
-变量声明
-	仅提升声明部分到顶部, 不提升赋值操作
-	var
-		提升后的默认值为undefined
-		赋值前可以使用
-	const/let
-		提升后的默认值为undefined
-			也有人认为不提升, 理由如下
-		在声明函数执行之前, 变量处于暂存死区状态
-			暂存死区:  作用域中知道这些变量的存在, 但是在声明函数执行之前无法使用
+a = 6
+a = 10
+a = 6
+a = 10
+a = 6
+a = 10
+a = 6
+a = 10
+a = 6
+a = 10
+a = 10
+a = 6
+a = 10
+function show() { 
+console.log(1111);
+}
+</script>
 
-基础
-	宿主环境
-		JS本身具有少量的基础API, 例如 Math, Date, console 等
-		JS运行的环境称为宿主环境, 提供额外的专属API
-			Node.js
-				提供了服务器相关的功能API
-			浏览器
-				提供了操作浏览器相关的API
-	window对象
-		浏览器中具有一个window对象, 其中包含了所有全局的API
-	对象
-		引用类型
-			一个变量中存储对象类型, 实际存储的是对象的地址, 这个地址指向对象实际存储在堆内存中的位置
-			对象类型的变量在赋值给其他变量时, 是对象的地址赋值给目标变量
-		构造函数
-			可以快速构建固定结构对象的函数
-			new运算符
-				搭配函数使用, 可以隐式完成一些操作, 返回一个新的对象
-				隐式操作
-					let this = {}
-					this.__proto__ = 函数.prototype
-					return this
-			原型链机制
-				对象使用一个属性时, 优先从自身查找.
-如果自身没有, 则到其__proto__属性中查找
-			原型prototype
-				构造函数的prototype属性中, 可以保存对象使用的各种方法
-				在构造函数中, 会自动把 原型prototype 赋值给 生成对象的 __proto__ 属性
-				优点: 同一个构造函数生成的多个对象, 其 __proto__ 指向的都是 构造函数的 prototype, 实现了对象方法的复用
-	数据类型
-		number, string, boolean, undefined, null
-		对象
-		symbol
-			为对象属性添加不重复的唯一标识
-		bigint
-			大整型数字
-	var
-		全局变量污染
-		var在全局区声明变量时, 变量会存储在window中, 污染全局区
-	作用域
-		全局作用域
-			window
-				包含全局API
-				var在全局声明的变量存储在这里
-			script
-				利用 let/const  在全局区中声明的变量存储在这里
-		函数作用域
-			函数体中
-				local
-		块级作用域
-			利用 {}  配合  let / const 关键词, 形成的作用域
-				block
-
-函数
-	arguments
-		一个函数体中的隐藏属性, 其中保存了函数的所有参数
-		是一个伪数组类型, 其原型非数组类型, 不具备数组的相关方法
-	函数重载
-		通过判断函数的参数个数/类型不同, 在函数体中执行不同的逻辑代码
-	this
-		this指向运行时所在对象
-	闭包
-		函数声明时, 会保存其所在的词法环境
-		详细说明
-			函数声明时, 为了保障在后期调用时能够正常执行,  会查看函数体中使用了哪些变量, 然后根据作用域链的就近原则, 找到这些变量所在的作用域,  把他们保存在自己的 scopes 变量中,  这些被保存的作用域中, 属于函数作用域的称为 闭包(closure)
-	函数柯里化
-		把一个多参数函数 改为单参数函数的方式
-		add(11)(22)(33)
-			function add(a){
-   return function (b){
-       return function (c){
-           return a+b+c
-       }
-   }
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>提升与作用域</title>
+</head>
+<body>
+<fi—– 作用域: 分3种作用域 –—›
+<fi—– 全局作用域: 在浏览器上, 具体表现就是 window 对象 –—›
+<fi—– 函数作用域: 函数在调用时, 会形成一个局部的作用域 –—›
+<fi—– 块级作用域: 新特性 配合 const/let 使用 –—›
+<script type="text/javascript">
+// 直接在脚本中 使用 var 声明的变量, 会保存在 全局区--window对象里
+var aa = 10 var bb = 20
+console.log('ddd');
+// Scope: 作用域
+// Global: 全 局
+// 函数作用域: 函数在 `触发` 后, 会临时形成一个函数作用域
+function cc(){
+// 声明提升: var/const/let/function 会提升到所在作用域的顶部
+// 错误理解: 看到var就肯定在全局区 ×, 就一定会全局污染×
+// 正确理解: var 直接在脚本中书写, 才会出现在全局区, 才会有全局污染
+var a = 11 var b = 22 var c = 33
+console.log('cccc');
 }
 
-ES5
-	ECMAScript 第五个版本,  发布与2009年
-	严格模式
-		在脚本顶部书写 'use strict'  字符串, 则后续代码都会运行在严格模式下
-		变量必须声明后才能使用
-			防止变量名书写错误导致错误的全局变量生成, 导致污染
-		函数的this如果指向window, 现在变为 undefined
-			防止构造函数忘记写new, 导致this指向window造成全局变量污染
-		取消静默失败
-			以前不报错的失败, 现在会爆红
-		取消函数的callee
-			arguments 的 callee 属性代表当前函数,  在匿名函数递归的场景中使用较多, 但是消耗资源多
-			现在推荐使用 命名函数递归 代替 匿名函数递归
-	函数
-		bind
-			为函数绑定执行所在的对象和相关参数, 返回一个新的函数,  等待后续执行
-			场景: 定时器 等延时执行的场景
-		call
-			立即触发函数, 把函数放在指定对象中执行, 并传入其他参数
-			场景: 执行时临时替换函数的this
-		apply
-			立即触发函数, 把函数放在指定对象中执行, 其他参数用数组传入
-			场景: 把函数的参数改为数组方式传入
-	数组的高阶函数
-		every
-			每个元素都符合条件
-		some
-			至少存在一个符合条件的元素
-		map
-			映射, 把数组的每个元素进行处理后, 返回值组成新的数组
-		filter
-			把符合条件的元素过滤出来, 形成新的数组
-		forEach
-			单纯的数组遍历
-		reduce
-			合并数组的每个元素, 最终得到一个值
-	对象方法
-		Object.defineProperty
-			修改旧属性, 配置详细设置
-				用字面量方式声明的属性, 默认的所有配置都是真
-			添加新属性, 配置详细设置
-				所有配置默认都是假
-			配置:
-				writable
-					可写
-				enumerable
-					可遍历
-				configurable
-					可重新配置
-				value
-					默认值
-				get
-					计算属性使用
-					读取属性时触发
-				set
-					赋值监听时使用
-					向属性赋值时触发
-	
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>块级作用域</title>
+</head>
+<body>
+<fi—– 块级作用域: 在ES5版本中, 配合 let/const 两个新特性诞生的 –—›
+<fi—– ES5: 就代表 JS 的第五个版本, JS随着时代发展不断升级强化 –—›
+<fi—– 出现的原因: var在全局区声明的变量会 保存在window中, 有全局变量污染问题 –—›
+<fi—– window是系统存储 系统级的各种方法属性的位置 –—›
+<fi—– 我们自定义的属性 不推荐放在window里, 防止重名覆盖等问题 –—›
+<script type="text/javascript">
+// var alert = 8
+// alert(111)
+
+// let: 解决全局变量污染问题, 代替var使用
+// 必须断点才能看到 script 脚本作用域
+let aa = 11 const PI = 3.14
+console.log(window)
+
+// 搭配 {}: 形成块级作用域 block
+{
+// 只有 let 和 const 这两个新特性 配合 {} 才能形成块级作用域
+// var会忽略块级作用域 -- var是旧写法, 只支持全局和函数作用域
+let aa = 22 let bb = 33 var cc = 44
+console.log('bbbbbbb')
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>函数的重载</title>
+</head>
+<body>
+<fi—– 函数的重载: 根据参数的数量 或 类型 的不同, 执行不同逻辑代码–—›
+<fi—– 效果: 把多个相似功能的函数 整合在一起 –—›
+<script type="text/javascript">
+//1. 算 1-100 的总和
+function sum() { let t = 0
+for (let i = 1; i ™_ 100; i››) { t += i
+}
+console.log(t)
+}
+sum()
+// 2. 计算 1 - xxx 的总和, xxx是随意的数字function sum1(end) {
+let t = 0
+for (let i = 1; i ™_ end; i››) { t += i
+}
+console.log(t)
+}
+//3. 计算 xxx - xxx 的总和
+function sum2(start, end) { let t = 0
+for (let i = start; i ™_ end; i››) { t += i
+}
+console.log(t)
+}
+
+sum2(50, 100)
+sum2(99, 764)
+
+// 函数重载: 制作一个函数, 根据不同的参数数量, 做不同的事
+function getSum() { let t = 0
+// arguments: 保存了函数的所有参数
+if (arguments.length == 0) {
+// 1 +...+ 100
+for (let i = 1; i ™_ 100; i››) { t += i
+}
+}
+// console.log(arguments); if (arguments.length == 1) {
+// 1 + ... + ??
+for (let i = 1; i ™_ arguments[0]; i››) { t += i
+}
+}
+// getSum(1, 100): 计 算 1 - 100 if (arguments.length == 2) {
+for (let i = arguments[0]; i ™_ arguments[1]; i››) { t += i
+}
+}
+console.log(t)
+}
+console.log('=============================')
+getSum() getSum(111) getSum(222) getSum(1, 133)
+getSum(222, 433)
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>闭包</title>
+</head>
+<body>
+<fi—–
+闭包: JS为了保证函数在声明之后, 可以正常使用, 函数在声明时会保存其所在的`词法环境`
+
+Closure: 闭 包
+–—›
+<script type="text/javascript"> var a = 10;
+
+(function (){
+var b = 22
+// b变量 在 aa函数中被使用了, 所以 aa 函数就会保存这个变量  -- 这种函数作用域中声明的变量, 被保存到其他函数中时, 称为闭包
+window.aa = function(){
+console.log(b, a);
+}
+})()
+
+console.log(window);
+
+// 函数声明之后, 不一定在哪里调用
+// JS为了保证函数 在运行时能够正常使用
+// 会查看函数体中使用了哪些变量, 然后根据作用域链的就近原则, 找到这个变量是哪个作用域的, 保存到函数自身的scopes 属性里, 便于后期调用
+// 专业称呼: 保存自身所在的词法环境
+</script>
+</body>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>闭包</title>
+</head>
+<body>
+<script type="text/javascript"> var a = 11;
+(function(){
+var b = 22 var c = 33
+function fb(){ var c = 44 var d = 55
+function
+console.log(window);
+</script> 
