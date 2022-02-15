@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css选择器</title>
+  </head>
+  <body>
+    <div id="box">
+      <div>
+        <div>
+          <span>Hello</span>
+        </div>
+      </div>
+      <div>
+        <span>Hello</span>
+      </div>
+      <div>
+        <span>Hello</span>
+      </div>
+    </div>
+
+    <script>
+      // 新的通用选择器: 借用css选择器 实现精准选择
+      // #box>div:first-child span
+
+      // querySelector: 查询出元素本身
+      // const s = document.querySelector('#box>div:first-child span')
+
+      // querySelectorAll: 所有满足条件的元素, 多个, 存储在 类数组
+      // 原型有 forEach 方法, 可用于遍历
+      const s = document.querySelectorAll('#box>div:first-child span')
+
+      console.log(s)
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>勾选状态</title>
+  </head>
+  <body>
+    <div>
+      <input type="checkbox" />
+      <span>我已阅读并同意用户注册协议</span>
+    </div>
+    <!-- disabled: 不可用 -->
+    <button disabled>提交注册</button>
+
+    <script>
+      // 监听: 勾选框的 `变` 化事件:  change
+      const chb = document.querySelector('input')
+      console.log(chb)
+      const btn = document.querySelector('button')
+      console.log(btn)
+
+      chb.onchange = function () {
+        console.dir(this) // 属性 checked 代表是否勾选
+        console.log(this.checked)
+
+        // 不可用: 真-代表不可用    假-代表可用
+        // 勾选: checked是真, 不可用为假;   不勾选: checked是假, 不可用是真
+        btn.disabled = !this.checked
+
+        // 逻辑运算符
+        // 逻辑非 !  逻辑或 ||   逻辑与 &&
+        // 非真为假, 非假为真 -- 取反
+
+        // 如果用 div + 样式来做按钮,  用toggle 切换样式即可
+      }
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>输入框事件</title>
+  </head>
+  <body>
+    <input type="text" />
+
+    <script>
+      const inp = document.querySelector('input')
+      console.log(inp)
+
+      // 1.获取焦点: focus -- 光标在内部闪烁
+      inp.onfocus = function () {
+        console.log('获得焦点')
+      }
+
+      // 2.失去焦点: blur -- 光标消失
+      inp.onblur = function () {
+        console.log('失去焦点')
+      }
+
+      // 3.输入框内容变化: change
+      // 触发方式: 1.输入框内容有变化  2.失去焦点时
+      inp.onchange = function () {
+        // 输入框的value属性,存放其值
+        console.log('输入框内容变化:', this.value)
+      }
+
+      // 4. `实时`变化监听: oninput
+      inp.oninput = function () {
+        // console.log(this.value)
+      }
+
+      // 5.键盘事件: 例如 按回车  keydown按下 keyup抬起 keypress整个操作
+
+      // 固定设定: 事件触发的函数, 接收一个参数, 就是事件相关的信息
+      inp.onkeyup = function (e) {
+        // console.log(arguments)
+        // console.log('键盘操作')
+        if (e.keyCode == 13) {
+          console.log(e) // 相当于 arguments[0]
+          console.log('回车按钮事件')
+        }
+      }
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手机号验证</title>
+    <style>
+      input {
+        /* outline: 外轮廓 -- none去掉默认的外轮廓 */
+        outline: none;
+        border: 1px solid gray;
+        border-radius: 2px;
+        transition: all 0.2s;
+      }
+      input:focus {
+        border-color: blue;
+      }
+      input.err {
+        border-color: red;
+      }
+      /* 兄弟关系: + */
+      input + div {
+        color: red;
+        margin-left: 52px;
+        display: none;
+      }
+      input.err + div {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <span>手机号</span>
+      <input type="text" />
+      <div>手机号码格式不正确</div>
+    </div>
+
+    <script>
+      //1. 查到 input 元素
+      const inp = document.querySelector('input')
+      //2. 绑定 onblur 失去焦点事件
+      inp.onblur = function () {
+        //3. 利用正则 验证输入框的值 是否正确:  /^1[3-9]\d{9}$/.test(手机号)
+        //   - 如果结果false, 则添加err样式, 否则移除err样式
+        var reg = /^1[3-9]\d{9}$/
+
+        if (reg.test(this.value)) {
+          // 正确
+          this.classList.remove('err')
+        } else {
+          // 错误
+          this.classList.add('err')
+        }
+      }
+
+      // 获得焦点时: 去掉err样式
+      inp.onfocus = function () {
+        this.classList.remove('err')
+      }
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>元素属性读取</title>
+  </head>
+  <body>
+    <a href="http://tmooc.cn" id="a1" title="Tmooc">Go To Tmooc</a>
+
+    <script>
+      const a = document.querySelector('a')
+      console.dir(a) // 到后台查看其中的各种属性
+
+      // 属性的读取分两种方式:
+      // 旧: 通过 getAttribute 方法读取
+      console.log(a.getAttribute('id'))
+      // 新: 直接通过属性名读取
+      console.log(a.id)
+
+      // 修改属性
+      // 旧:
+      a.setAttribute('title', '百度一下')
+      // 新:
+      a.title = '百度一下'
+
+      // 判断是否存在某个属性:
+      console.log(a.hasAttribute('target')) // false 代表没有
+
+      // 新语法: 没有自定义过的属性, 其值默认是 空字符串
+      console.log(a.target != '') //值不是空字符串, 就说明有
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义属性</title>
+    <style>
+      * {
+        user-select: none;
+      }
+      div {
+        width: 100px;
+        line-height: 100px;
+        border-radius: 50%;
+        text-align: center;
+        border: 1px solid gray;
+        display: inline-block;
+        transition: all 0.3s;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 每个元素都带有很多系统属性, 实际开发需要自定义属性做个性化操作 -->
+    <!-- 自定义属性 data-属性名=值 -->
+    <div data-bg="red" data-plane="p3">红</div>
+    <div data-bg="green" data-plane="p4">绿</div>
+    <div data-bg="blue" data-plane="p5">蓝</div>
+    <br />
+    <img src="./images/p0.png" alt="" />
+
+    <script>
+      const divs = document.querySelectorAll('div')
+
+      divs.forEach(value => {
+        value.onclick = function () {
+          // 点击时变为对应的颜色
+          console.dir(this) //点击后, 查看元素的 dataset 的属性
+          // data-bg :存储在元素的 dataset.bg
+          const bg = this.dataset.bg
+          this.style.backgroundColor = bg
+
+          // 飞机名:  this.dataset.plane
+          // 旧方式读取:
+          const plane = this.getAttribute('data-plane')
+          console.log(plane)
+
+          const img = document.querySelector('img')
+          // 飞机名 拼接到路径中
+          img.src = `./images/${plane}.png`
+        }
+      })
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>大小图切换</title>
+
+    <style>
+      #banner {
+        user-select: none;
+      }
+      #banner > img {
+        width: 500px;
+      }
+      #banner > div > img {
+        width: 100px;
+        /* transparent: 透明 */
+        border: 3px solid transparent;
+      }
+
+      #banner > div > img.cur {
+        border-color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="banner">
+      <img src="./images/1-l.jpg" alt="" />
+      <div>
+        <img data-big="1-l" class="cur" src="./images/1.jpg" alt="" />
+        <img data-big="2-l" src="./images/2.jpg" alt="" />
+        <img data-big="3-l" src="./images/3.jpg" alt="" />
+        <img data-big="4-l" src="./images/4.jpg" alt="" />
+      </div>
+    </div>
+
+    <script>
+      // 1. 查询到所有的小图, 遍历添加鼠标悬浮事件 onmouseover
+      const small_imgs = document.querySelectorAll('#banner>div>img')
+      small_imgs.forEach(value => {
+        value.onmouseover = function () {
+          // 2. 触发时, 找到 cur 样式的元素, 去掉 cur 样式
+          const cur = document.querySelector('#banner .cur')
+          cur.classList.remove('cur')
+          // 3. 为当前项添加 cur 样式
+          this.classList.add('cur')
+
+          const big = this.dataset.big
+
+          const big_img = document.querySelector('#banner>img')
+          big_img.src = `./images/${big}.jpg`
+        }
+      })
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>标签栏切换</title>
+
+    <style>
+      #tabs {
+        width: 500px;
+        user-select: none;
+      }
+      #tabs > div:first-child {
+        background-color: #eee;
+        color: #555;
+        /* 晚上回顾下 弹性盒子:  很有用 */
+        display: flex;
+      }
+      #tabs > div:first-child > span {
+        line-height: 40px;
+        flex: 1;
+        text-align: center;
+        border: 1px solid gray;
+      }
+
+      #tabs > div:last-child > div {
+        height: 200px;
+        border: 2px solid green;
+        display: none;
+      }
+
+      #tabs > div:first-child > .cur {
+        background-color: aqua;
+      }
+      #tabs > div:last-child > .cur {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tabs">
+      <div>
+        <!-- 自定义属性: index 代表对应的详情元素的序号 -->
+        <span data-index="0" class="cur">今日点数</span>
+        <span data-index="1">本周点数</span>
+        <span data-index="2">贵宾(1.4万)</span>
+        <span data-index="3">钻粉(273)</span>
+      </div>
+      <div>
+        <div class="cur">今日点数...</div>
+        <div>本周点数...</div>
+        <div>贵宾(1.4万)...</div>
+        <div>钻粉(273)...</div>
+      </div>
+    </div>
+
+    <script>
+      const titles = document.querySelectorAll('#tabs>div:first-child>span')
+
+      titles.forEach(value => {
+        value.onclick = function () {
+          const cur = document.querySelector('#tabs>div:first-child>.cur')
+          cur.classList.remove('cur')
+          this.classList.add('cur')
+
+          const index = this.dataset.index //自定义属性: 序号
+
+          // 移除内容的当前项样式
+          const cur1 = document.querySelector('#tabs>div:last-child>.cur')
+          cur1.classList.remove('cur')
+
+          const content = document.querySelector('#tabs>div:last-child')
+          // 通过序号找到对应的子元素
+          content.children[index].classList.add('cur')
+        }
+      })
+    </script>
+  </body>
+</html>
