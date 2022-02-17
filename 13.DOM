@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>阻止默认事件</title>
+  </head>
+  <body>
+    <!-- a标签带有href属性时: 点击后默认会跳转 -->
+    <a href="http://www.baidu.com">百度一下</a>
+
+    <script>
+      const a = document.querySelector('a')
+      // 目标: 修改 a 标签的点击效果, 例如简单做个打印
+      a.onclick = function (e) {
+        // prevent:阻止  default:默认
+        e.preventDefault()
+        // e: 事件触发的函数, 接收事件对象作为参数
+
+        console.log('AAAAAA')
+      }
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>鼠标事件</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #box {
+        background-color: red;
+        width: 300px;
+        height: 300px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 通过鼠标的事件, 可以了解点击时的各种坐标值 -->
+    <!-- 后续操作: -->
+    <!-- 1. 可以在点击位置生成某些元素 -->
+    <!-- 2. 点击图片时: 识别点击位置 ,  例如 图片验证 之类的需求  -->
+    <!-- 常用于制作 验证码之类的需求 -->
+    <div id="box"></div>
+
+    <script>
+      box.onclick = function (e) {
+        console.log(e)
+        // x,y; clientX, clientY; pageX, pageY;
+        // 代表鼠标点击位置 距离 页面左上角的距离
+
+        // offsetX, offsetY
+        // 代表鼠标点击的位置  在当前元素中的坐标
+
+        // screenX, screenY
+        // 鼠标点击位置 距离 屏幕的左上角 的偏移量
+      }
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>鼠标事件</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #box {
+        background-color: red;
+        width: 300px;
+        height: 300px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 通过鼠标的事件, 可以了解点击时的各种坐标值 -->
+    <!-- 后续操作: -->
+    <!-- 1. 可以在点击位置生成某些元素 -->
+    <!-- 2. 点击图片时: 识别点击位置 ,  例如 图片验证 之类的需求  -->
+    <!-- 常用于制作 验证码之类的需求 -->
+    <div id="box"></div>
+
+    <script>
+      box.onclick = function (e) {
+        console.log(e)
+        // x,y; clientX, clientY; pageX, pageY;
+        // 代表鼠标点击位置 距离 页面左上角的距离
+
+        // offsetX, offsetY
+        // 代表鼠标点击的位置  在当前元素中的坐标
+
+        // screenX, screenY
+        // 鼠标点击位置 距离 屏幕的左上角 的偏移量
+      }
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件监听器</title>
+  </head>
+  <body>
+    <!-- 可以监听元素发生了某个事件 -->
+    <button>点我</button>
+
+    <script>
+      const btn = document.querySelector('button')
+
+      // onclick属性: 一次只能绑定一个函数
+      btn.onclick = function () {
+        console.log(1111)
+      }
+
+      btn.onclick = function () {
+        console.log(2222)
+      }
+
+      // 事件监听器: 监听事件发生后, 执行函数
+      // add:添加  event:事件  listener: 监听器
+      // 参数1: 事件名  注意: onclick -> on(当..时)  click(事件名)
+      // 参数2: 关联的函数
+      btn.addEventListener('click', function () {
+        console.log(33333)
+      })
+
+      btn.addEventListener('click', function () {
+        console.log(4444)
+      })
+
+      // 删除事件监听: 则必须保存函数的地址才可以
+      // d 变量中, 存储了函数的地址
+      const d = function () {
+        console.log(5555)
+      }
+
+      btn.addEventListener('click', d)
+
+      // 删除 click 事件相关的 d 函数
+      // remove: 删除
+      btn.removeEventListener('click', d)
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手动创建DOM元素</title>
+  </head>
+  <body>
+    <!-- 
+      之前: 在HTML中书写代码, 浏览器帮助自动转换成DOM元素, 然后添加到页面上
+
+      现在: 极致的性能 -- 抛弃HTML代码, 直接用JS创建DOM元素
+     -->
+    <div id="box">
+      <!-- HTML写法:  -->
+      <!-- 优点: 书写简单, 查看方便 -->
+      <!-- 缺点: 浏览器需要消耗性能转化成DOM -->
+      <button id="b1" class="danger">点我</button>
+    </div>
+
+    <script>
+      // 创建一个按钮, 放到 id=box 的元素里
+      // <button id='b1' class='danger'>点我</button>
+
+      // createElement: 创建元素;   参数是 元素名
+      const btn = document.createElement('button')
+      btn.id = 'b1'
+      btn.className = 'danger'
+      btn.innerHTML = '点我'
+
+      console.log(btn)
+
+      const box = document.getElementById('box')
+      // 放到 box 的子元素里
+      box.appendChild(btn) // append:添加/新增
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文档片段</title>
+  </head>
+  <body>
+    <div id="box"></div>
+    <!-- 
+      Q 问题;  A 回答;
+      Q: 如何遍历添加元素, 并且保障性能
+      A: 文档片段, 把遍历生成的元素集体存放, 然后一起渲染
+     -->
+
+    <script>
+      const skills = ['html', 'css', 'js', 'express']
+
+      // Fragment: 片段
+      // 文档片段: 存储 DOM对象的 小容器 -- 虚拟的容器
+      const frag = document.createDocumentFragment()
+
+      skills.forEach(value => {
+        const btn = document.createElement('button')
+        btn.innerHTML = value
+
+        // 核心点:  把创建的DOM元素, 存储在片段容器里
+        frag.appendChild(btn)
+      })
+
+      // 当遍历操作完毕后, 所有的DOM元素就存储在容器里
+      // 把 这个容器 放到box里
+      box.appendChild(frag) //容器中的元素 一起渲染
+    </script>
+  </body>
+</html>
