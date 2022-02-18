@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="./css/reset.css">
+	<link rel="stylesheet" href="./css/sy.css">
+</head>
+
+<body>
+	<!-- f1 -->
+	<div class="f1">
+		<div class="container">
+			<!-- 左边 -->
+			<div class="left">
+				<ul class="menu">
+					<li><img src="">f1</li>
+					<li><img src=""></li>
+					<li><a href="#">北京</a></li>
+					<li><img src=""></li>
+					<li><a href="#">首页</a></li>
+					<li><a href="#">分类</a></li>
+				</ul>
+			</div>
+			<!-- 中间 -->
+			<div class="center">
+				中间
+			</div>
+			<div class="right">
+				右侧
+			</div>
+		</div>
+	</div>
+	<!-- f2 -->
+	<div class="f2">
+		<div class="container">f2</div>
+	</div>
+	<!-- f3 -->
+	<div class="f3">
+		<div class="container">
+			f3
+		</div>
+	</div>
+	<!-- f4 -->
+	<div class="f4">
+		<div class="container">
+			<div class="top">
+				<div class="yan">演唱会</div>
+				<div class="cha">查看全部</div>
+			</div>
+			<div class="box">
+			<div class="left">
+				左大图
+			</div>
+			<div class="right">
+				<div class="list">
+					<div class="product">1</div>
+					<div class="product">2</div>
+					<div class="product">3</div>
+					<div class="product">4</div>
+					<div class="product">5</div>
+					<div class="product">6</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	<!-- f5 -->
+	<div class="f5">
+		<div class="container">
+			<div class="left">
+
+				<div class="top">
+					<span class="yan">话剧歌剧</span>
+					<span class="cha">查看全部</span>
+				</div>
+			</div>
+			<div class="right">
+				<div class="list">
+					<div class="product">1</div>
+					<div class="product">2</div>
+					<div class="product">3</div>
+					<div class="product">4</div>
+					<div class="product">5</div>
+					<div class="product">6</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- f6 -->
+	<div class="f6">
+		<div class="container">
+			<div class="left">
+
+				<div class="top">
+					<span class="yan">体育比赛</span>
+					<span class="cha">查看全部</span>
+				</div>
+			</div>
+			<div class="right">
+				<div class="list">
+					<div class="product">1</div>
+					<div class="product">2</div>
+					<div class="product">3</div>
+					<div class="product">4</div>
+					<div class="product">5</div>
+					<div class="product">6</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- f7 -->
+	<div class="f5">
+		<div class="container">
+			<div class="top">
+				<span class="yan">儿童亲子</span>
+				<span class="cha">查看全部</span>
+			</div>
+			<div class="box">
+				<div class="left">
+					左大图
+				</div>
+				<div class="right">
+					<div class="list">
+						<div class="product">1</div>
+						<div class="product">2</div>
+						<div class="product">3</div>
+						<div class="product">4</div>
+						<div class="product">5</div>
+						<div class="product">6</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- f8 -->
+	<div class="f8">
+		<div class="container">f8</div>
+	</div>
+</body>
+</html>
+
+/* f1 */
+.container{
+	display: flex;
+}
+.container>.left{
+	flex-basis: 300px;
+}
+.menu{
+	display: flex;
+}
+.container>.center{
+	flex: 1;
+}
+.container>.right{
+	flex-basis: 200px;
+}
+/* f2*/
+.f2>.container{
+	margin-bottom: 10px;
+}
+
+/* f3 */
+.f3{
+	height: 100px;
+}
+
+/* =======================f4========== */
+.f4 > .container{
+	display: flex;
+	align-items: flex-start;
+}
+.f4>.container>.top{
+	display: inline-block;
+	display: flex;
+	width: 100%;
+}
+.f4>.container>.box{
+	display: flex;
+}
+.f4>.container>.left{
+	flex-basis: 291px;
+	margin-right: 10px;
+}
+.f4>.container>.right{
+	flex: 1;
+}
+.list{
+	display: flex;
+	flex-wrap: wrap;
+}
+.product{
+	flex-basis: 32%;
+	margin-bottom: 6px;
+	padding: 6px;
+}
+
+/* =============f5================ */
+.f5 > .container{
+	display: flex;
+	align-items: flex-start;
+}
+.f5 >.container>.top{
+	display: inline-block;
+}
+.f5>.container>.left{
+	flex-basis: 291px;
+	margin-right: 10px;
+}
+.f5>.container>.right{
+	flex: 1;
+}
+.list{
+	display: flex;
+	flex-wrap: wrap;
+}
+.product{
+	flex-basis: 32%;
+	margin-bottom: 6px;
+	padding: 6px;
+}
+
+/* ==============f6================= */
+.f6 > .container{
+	display: flex;
+	align-items: flex-start;
+}
+.f6 >.container>.top{
+	display: inline-block;
+}
+.f6>.container>.left{
+	flex-basis: 291px;
+	margin-right: 10px;
+}
+.f6>.container>.right{
+	flex: 1;
+}
+.list{
+	display: flex;
+	flex-wrap: wrap;
+}
+.product{
+	flex-basis: 32%;
+	margin-bottom: 6px;
+	padding: 6px;
+}
+/* ====================f7=================== */
+.f7 > .container{
+	display: flex;
+	align-items: flex-start;
+}
+.f7 >.container>.top{
+	display: inline-block;
+}
+.f7>.container>.left{
+	flex-basis: 291px;
+	margin-right: 10px;
+}
+.f7>.container>.right{
+	flex: 1;
+}
+.list{
+	display: flex;
+	flex-wrap: wrap;
+}
+.product{
+	flex-basis: 32%;
+	margin-bottom: 6px;
+	padding: 6px;
+}
