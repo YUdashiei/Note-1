@@ -1,0 +1,15 @@
+1. //创建一个vue应用
+    const app = Vue.createApp({
+        //传入的参数表示最外层的组件该如何展示
+        //mvvm设计模式：m-model数据（data中的数据）v-view视图(模板) vm-viewModel（模板和数据自动做连接） 
+        data() {
+            return {
+                mes: 'hello world'
+            }
+        },
+        template:"<div>{{ mes }}</div>"//模板
+    });
+    //vue应用的根组件
+    const vm = app.mount('#root')
+    //要操作data数据的话就得用$data方法做引用才能用到
+    vm.$data.mes
